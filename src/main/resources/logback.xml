@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+
+	<appender name="multiplex-global"
+		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
+		<Compressing>true</Compressing>
+		<!-- will automatically use correct default port -->
+		<ReconnectionDelay>10000</ReconnectionDelay>
+		<IncludeCallerData>true</IncludeCallerData>
+		<RemoteHosts>localhost</RemoteHosts>
+		<ApplicationIdentifier>liveSense-ALL</ApplicationIdentifier>
+		<encoding>UTF-8</encoding>
+	</appender>
+
+	<appender name="multiplex-livesense"
+		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
+		<Compressing>true</Compressing>
+		<!-- will automatically use correct default port -->
+		<ReconnectionDelay>10000</ReconnectionDelay>
+		<IncludeCallerData>true</IncludeCallerData>
+		<RemoteHosts>localhost</RemoteHosts>
+		<ApplicationIdentifier>liveSense-liveSense</ApplicationIdentifier>
+		<encoding>UTF-8</encoding>
+	</appender>
+
+	<appender name="multiplex-requestlog"
+		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
+		<Compressing>true</Compressing>
+		<!-- will automatically use correct default port -->
+		<ReconnectionDelay>10000</ReconnectionDelay>
+		<IncludeCallerData>true</IncludeCallerData>
+		<RemoteHosts>localhost</RemoteHosts>
+		<ApplicationIdentifier>liveSense-requestLog</ApplicationIdentifier>
+		<encoding>UTF-8</encoding>
+	</appender>
+
+	<!-- 
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/Project/logback.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
+				%msg%n
+			</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>/Project/logback.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>2MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	 -->
+	 
+	<!-- Global log -->
+	<root level="INFO">
+		<appender-ref ref="multiplex-global" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+	<!-- liveSense specific log events -->
+	<logger name="org.liveSense" level="INFO">
+		<appender-ref ref="multiplex-livesense" />
+	</logger>
+
+	<!-- Request logs -->
+	<logger name="logs/request.log">
+		<appender-ref ref="multiplex-requestlog" />
+	</logger>
+	<logger name="logs/access.log">
+		<appender-ref ref="multiplex-requestlog" />
+	</logger>
+
+</configuration>
