@@ -80,5 +80,8 @@
 	<logger name="logs/access.log">
 		<appender-ref ref="multiplex-requestlog" />
 	</logger>
+	<logger name="de.huxhorn.lilith" level="ERROR">
+		<appender-ref ref="STDOUT" />
+	</logger>
 
 </configuration>
