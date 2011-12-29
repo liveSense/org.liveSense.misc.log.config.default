@@ -41,6 +41,17 @@
 		<encoding>UTF-8</encoding>
 	</appender>
 
+	<appender name="multiplex-gwtrpc"
+		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
+		<Compressing>true</Compressing>
+		<!-- will automatically use correct default port -->
+		<ReconnectionDelay>10000</ReconnectionDelay>
+		<IncludeCallerData>true</IncludeCallerData>
+		<RemoteHosts>localhost</RemoteHosts>
+		<ApplicationIdentifier>liveSense-GWTRPC</ApplicationIdentifier>
+		<encoding>UTF-8</encoding>
+	</appender>
+
 	<!-- 
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -71,6 +82,12 @@
 	<!-- liveSense specific log events -->
 	<logger name="org.liveSense" level="INFO">
 		<appender-ref ref="multiplex-livesense" />
+	</logger>
+
+
+	<!-- liveSense GWTRPC log events -->
+	<logger name="GWTRPC" level="INFO">
+		<appender-ref ref="multiplex-gwtrpc" />
 	</logger>
 
 	<!-- Request logs -->
