@@ -8,61 +8,30 @@
 		</encoder>
 	</appender>
 
-	<appender name="multiplex-global"
+	<!-- Log appender for Lilith -->
+	<!-- 
+	<appender name="LILITH-MULTIPLEX"
 		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
 		<Compressing>true</Compressing>
-		<!-- will automatically use correct default port -->
+		\<\!\-\- will automatically use correct default port \-\-\>
 		<ReconnectionDelay>10000</ReconnectionDelay>
 		<IncludeCallerData>true</IncludeCallerData>
 		<RemoteHosts>localhost</RemoteHosts>
 		<ApplicationIdentifier>liveSense-ALL</ApplicationIdentifier>
 		<encoding>UTF-8</encoding>
 	</appender>
+	-->
 
-	<appender name="multiplex-livesense"
-		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
-		<Compressing>true</Compressing>
-		<!-- will automatically use correct default port -->
-		<ReconnectionDelay>10000</ReconnectionDelay>
-		<IncludeCallerData>true</IncludeCallerData>
-		<RemoteHosts>localhost</RemoteHosts>
-		<ApplicationIdentifier>liveSense-liveSense</ApplicationIdentifier>
-		<encoding>UTF-8</encoding>
-	</appender>
-
-	<appender name="multiplex-requestlog"
-		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
-		<Compressing>true</Compressing>
-		<!-- will automatically use correct default port -->
-		<ReconnectionDelay>10000</ReconnectionDelay>
-		<IncludeCallerData>true</IncludeCallerData>
-		<RemoteHosts>localhost</RemoteHosts>
-		<ApplicationIdentifier>liveSense-requestLog</ApplicationIdentifier>
-		<encoding>UTF-8</encoding>
-	</appender>
-
-	<appender name="multiplex-gwtrpc"
-		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
-		<Compressing>true</Compressing>
-		<!-- will automatically use correct default port -->
-		<ReconnectionDelay>10000</ReconnectionDelay>
-		<IncludeCallerData>true</IncludeCallerData>
-		<RemoteHosts>localhost</RemoteHosts>
-		<ApplicationIdentifier>liveSense-GWTRPC</ApplicationIdentifier>
-		<encoding>UTF-8</encoding>
-	</appender>
-
-	<!-- 
-	<appender name="FILE"
+	<appender name="FILE-ROOT"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>/Project/logback.log</file>
+		<file>${log.home:-./sling}/logs/root.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
 				%msg%n
 			</Pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<FileNamePattern>/Project/logback.%i.log.zip</FileNamePattern>
+			<FileNamePattern>${log.home:-./sling}/logs/root.%i.log.zip</FileNamePattern>
 			<MinIndex>1</MinIndex>
 			<MaxIndex>10</MaxIndex>
 		</rollingPolicy>
@@ -71,38 +40,103 @@
 			<MaxFileSize>2MB</MaxFileSize>
 		</triggeringPolicy>
 	</appender>
-	 -->
+
+	<appender name="FILE-LIVESENSE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.home:-./sling}/logs/liveSense.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
+				%msg%n
+			</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${log.home:-./sling}/logs/liveSense.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>2MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<appender name="FILE-REQUESTLOG"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.home:-./sling}/logs/request.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
+				%msg%n
+			</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${log.home:-./sling}/logs/logback.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>2MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+
+	<appender name="FILE-ACCESSLOG"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.home:-./sling}/logs/access.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
+				%msg%n
+			</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${log.home:-./sling}/logs/access.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>2MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
 	 
 	<!-- Global log -->
 	<root level="INFO">
-		<appender-ref ref="multiplex-global" />
 		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE-ROOT"/>
 	</root>
 
 	<!-- liveSense specific log events -->
 	<logger name="org.liveSense" level="INFO">
-		<appender-ref ref="multiplex-livesense" />
-	</logger>
-
-
-	<!-- liveSense GWTRPC log events -->
-	<logger name="GWTRPC" level="INFO">
-		<appender-ref ref="multiplex-gwtrpc" />
+		<appender-ref ref="FILE-LIVESENSE" />
 	</logger>
 
 	<!-- Request logs -->
 	<logger name="logs/request.log">
-		<appender-ref ref="multiplex-requestlog" />
+		<appender-ref ref="FILE-REQUEST" />
 	</logger>
 	<logger name="logs/access.log">
-		<appender-ref ref="multiplex-requestlog" />
+		<appender-ref ref="FILE-ACCESS" />
 	</logger>
 	<logger name="de.huxhorn.lilith" level="ERROR">
 		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE-ROOT" />
 	</logger>
 	<logger name="org.apache.solr" level="WARN">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="multiplex-livesense" />
+		<appender-ref ref="FILE-ROOT" />
 	</logger>
 
+	<!-- Log appenders for Lilith -->
+<!-- 
+	<appender name="LILITH-MULTIPLEX"
+		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
+		<Compressing>true</Compressing>
+		\<\!\-\- will automatically use correct default port \-\-\>
+		<ReconnectionDelay>10000</ReconnectionDelay>
+		<IncludeCallerData>true</IncludeCallerData>
+		<RemoteHosts>localhost</RemoteHosts>
+		<ApplicationIdentifier>liveSense-ALL</ApplicationIdentifier>
+		<encoding>UTF-8</encoding>
+	</appender>
+-->
 </configuration>
