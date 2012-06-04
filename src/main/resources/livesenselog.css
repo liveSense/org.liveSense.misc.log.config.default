@@ -1,0 +1,62 @@
+.loglevel_trace {
+	background-color: #ffffff;
+}
+
+.loglevel_debug  {
+	background-color: #77ff77;
+}
+
+.loglevel_error {
+	background-color: #ff7777;
+}
+
+.loglevel_info  {
+	background-color: #dddddd;
+}
+
+.loglevel_warn  {
+	background-color: #ffbb33;
+}
+
+.logexception_row  {
+	background-color: #ffff77;
+}
+
+.exceptionbutton_available {
+	background-color: #ffff77;
+	vertical-align:middle;
+	text-align: center;
+	text-align: -moz-center;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+
+.loglevel {
+	font-size: 8pt;
+	border-top: 0px;
+	font-weight: bold;
+}
+
+.logmessage {
+	font-size: 8pt;
+	font-weight: bold;
+}
+
+.logger {
+	font-size: 8pt;
+}
+
+.logdate {
+	font-size: 8pt;
+	font-weight: bold;
+}
+
+
+.custom_gwtrequestlog {
+	color: #007700;
+}
+
+#logtable {
+	font-size: 7pt;
+}

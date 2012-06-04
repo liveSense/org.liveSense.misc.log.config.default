@@ -7,23 +7,57 @@
 			</Pattern>
 		</encoder>
 	</appender>
-
+    <!--
+	 <appender name="FILE-HTMLOUT" class="ch.qos.logback.core.FileAppender">                                                                                                     
+            <file>${log.home:-./sling}/logs/log.html</file>                                                                                                                         
+            <append>false</append>                                                                                                                                                  
+            <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">                                                                                                     
+                <layout class="ch.qos.logback.classic.html.HTMLLayout">                                                                                                             
+                    <pattern>%relative%thread%mdc%level%logger%msg</pattern>                                                                                                        
+                </layout>                                                                                                                                                           
+            </encoder>                                                                                                                                                              
+    </appender>
+    -->
+	<appender name="FILE-XMLOUT" class="ch.qos.logback.core.FileAppender">
+		<file>${log.home:-./sling}/logs/session.xml</file>
+		<append>false</append>
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<layout class="ch.qos.logback.classic.log4j.XMLLayout">
+				<locationInfo>true</locationInfo>
+			</layout>
+		</encoder>
+	</appender>
+    
 	<!-- Log appender for Lilith -->
-	<!-- 
-	<appender name="LILITH-MULTIPLEX"
-		class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
+	<!-- 	<appender name="LILITH-WEBCONSOLE" class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
 		<Compressing>true</Compressing>
-		\<\!\-\- will automatically use correct default port \-\-\>
-		<ReconnectionDelay>10000</ReconnectionDelay>
+		<ReconnectionDelay>15</ReconnectionDelay>
 		<IncludeCallerData>true</IncludeCallerData>
 		<RemoteHosts>localhost</RemoteHosts>
-		<ApplicationIdentifier>liveSense-ALL</ApplicationIdentifier>
+		<ApplicationIdentifier>WEBCONSOLE-LOGGER</ApplicationIdentifier>
 		<encoding>UTF-8</encoding>
 	</appender>
-	-->
+-->
 
-	<appender name="FILE-ROOT"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="WEBCONSOLE-SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+		<discriminator>
+			<key>userId</key>
+			<defaultValue>system</defaultValue>
+		</discriminator>
+		<sift>
+			<appender name="LILITH-WEBCONSOLE-${userId}" class="de.huxhorn.lilith.logback.appender.ClassicMultiplexSocketAppender">
+				<Compressing>true</Compressing>
+				<ReconnectionDelay>15</ReconnectionDelay>
+				<IncludeCallerData>false</IncludeCallerData>
+				<RemoteHosts>localhost</RemoteHosts>
+				<ApplicationIdentifier>USER-${userId}</ApplicationIdentifier>
+				<encoding>UTF-8</encoding>
+			</appender>
+		</sift>
+	</appender>
+
+
+	<appender name="FILE-ROOT" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${log.home:-./sling}/logs/root.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
@@ -35,14 +69,12 @@
 			<MinIndex>1</MinIndex>
 			<MaxIndex>10</MaxIndex>
 		</rollingPolicy>
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
 			<MaxFileSize>2MB</MaxFileSize>
 		</triggeringPolicy>
 	</appender>
 
-	<appender name="FILE-LIVESENSE"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="FILE-LIVESENSE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${log.home:-./sling}/logs/liveSense.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
@@ -54,14 +86,12 @@
 			<MinIndex>1</MinIndex>
 			<MaxIndex>10</MaxIndex>
 		</rollingPolicy>
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
 			<MaxFileSize>2MB</MaxFileSize>
 		</triggeringPolicy>
 	</appender>
 
-	<appender name="FILE-REQUESTLOG"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="FILE-REQUESTLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${log.home:-./sling}/logs/request.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
@@ -73,15 +103,13 @@
 			<MinIndex>1</MinIndex>
 			<MaxIndex>10</MaxIndex>
 		</rollingPolicy>
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
 			<MaxFileSize>2MB</MaxFileSize>
 		</triggeringPolicy>
 	</appender>
 
 
-	<appender name="FILE-ACCESSLOG"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="FILE-ACCESSLOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${log.home:-./sling}/logs/access.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
@@ -93,8 +121,7 @@
 			<MinIndex>1</MinIndex>
 			<MaxIndex>10</MaxIndex>
 		</rollingPolicy>
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
 			<MaxFileSize>2MB</MaxFileSize>
 		</triggeringPolicy>
 	</appender>
@@ -102,9 +129,17 @@
 	<!-- Global log -->
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE-ROOT"/>
+		<appender-ref ref="FILE-ROOT" />
+		<appender-ref ref="FILE-XMLOUT" />
 	</root>
 
+	<logger name="TEST" level="DEBUG">
+			<appender-ref ref="WEBCONSOLE-SIFT" />
+	</logger>
+	<logger name="TEST2" level="DEBUG">
+			<appender-ref ref="STDOUT" />
+	</logger>
+	
 	<!-- liveSense specific log events -->
 	<logger name="org.liveSense" level="INFO">
 		<appender-ref ref="FILE-LIVESENSE" />
@@ -117,13 +152,28 @@
 	<logger name="logs/access.log">
 		<appender-ref ref="FILE-ACCESS" />
 	</logger>
-	<logger name="de.huxhorn.lilith" level="ERROR">
+	<logger name="de.huxhorn.lilith" level="DEBUG">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE-ROOT" />
 	</logger>
+	
+	<logger name="de.huxhorn.lilith.engine.impl.eventproducer.AbstractEventProducer" level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="de.huxhorn.lilith.engine.impl.sourcemanager.EventPoller" level="WARN">
+		<appender-ref ref="STDOUT" />	
+	</logger>
+
+<!-- 	de.huxhorn.lilith.engine.impl.eventproducer.AbstractEventProducer	
+	de.huxhorn.lilith.engine.impl.sourcemanager.EventPoller
+ -->
+	<logger name="org.liveSense.misc.log.webconsole.LogWebConsolePlugin" level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
 	<logger name="org.apache.solr" level="WARN">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE-ROOT" />
+		<appender-ref ref="FILE-XMLOUT" />
 	</logger>
 
 	<!-- Log appenders for Lilith -->
