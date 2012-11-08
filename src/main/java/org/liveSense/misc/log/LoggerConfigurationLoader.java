@@ -33,12 +33,16 @@ public class LoggerConfigurationLoader {
 
 	FileSystemManager fsManager = null;
 	DefaultFileMonitor logMonitor;
+	{
+		StatusPrinter.printInCaseOfErrorsOrWarnings(lc);
+		StatusPrinter.setPrintStream(System.out);
+	}
 	
 
 	@Activate
 	protected void activate(BundleContext context) {
 		// assume SLF4J is bound to logback in the current environment
-	    
+		
 	    try {
 	      configurator.setContext(lc);
 
